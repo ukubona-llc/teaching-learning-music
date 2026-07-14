@@ -21,6 +21,8 @@
       --gold: #C9982E;
       --gold-dim: #8E7130;
       --teal: #4C8078;
+      --violet: #8B7BD8;
+      --violet-dim: #6659A6;
       --hair: rgba(236,228,211,0.14);
       --hair-soft: rgba(236,228,211,0.06);
       --shadow: 0 4px 24px rgba(0,0,0,0.2);
@@ -36,6 +38,8 @@
       --gold: #B38622;
       --gold-dim: #C9982E;
       --teal: #3B6B64;
+      --violet: #6659A6;
+      --violet-dim: #8B7BD8;
       --hair: rgba(20,17,28,0.12);
       --hair-soft: rgba(20,17,28,0.04);
       --shadow: 0 4px 24px rgba(0,0,0,0.04);
@@ -199,9 +203,18 @@
       background: var(--hair);
       transition: background 0.3s;
     }
+    .card.twin::before { background: var(--violet); }
     .card.app::before { background: var(--teal); }
     .card.curriculum::before { background: var(--gold); }
     .card.essay::before { background: var(--ink-dim); }
+
+    /* Twin card is the flagship — give it a quiet emphasis */
+    .card.twin {
+      border-color: var(--violet-dim);
+    }
+    .card.twin:hover {
+      border-color: var(--violet);
+    }
 
     .card-kicker {
       font-family: 'IBM Plex Mono', monospace;
@@ -243,6 +256,25 @@
       color: #14111C;
       text-decoration: none;
     }
+    .card.twin a.button:hover {
+      background: var(--violet);
+      color: #14111C;
+    }
+
+    /* Small tag inside the twin card marking the onboarding tier */
+    .tier-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--violet);
+      border: 1px solid var(--violet-dim);
+      border-radius: 3px;
+      padding: 0.25rem 0.6rem;
+      margin-bottom: 1rem;
+      align-self: flex-start;
+    }
 
     /* ---------- FOOTER ---------- */
     footer {
@@ -280,13 +312,22 @@
       <div class="eyebrow">A Digital Twin for Musical Intuition</div>
       <h1>The <em>Berklee Pocket</em> meets<br/>the Latent Space.</h1>
       <p>
-        A central router for the Ukubona music education ecosystem. Here you will find the theoretical curriculum, the interactive training environment, and the philosophical framework underpinning the methodology.
+        A central router for the Ukubona music education ecosystem. Here you will find the theoretical curriculum, the interactive training environment, the philosophical framework underpinning the methodology, and the live digital twin used to onboard new clients.
       </p>
     </section>
 
     <!-- ROUTER CARDS -->
     <section class="grid">
-      
+
+      <!-- Card 0: The Digital Twin -->
+      <div class="card twin">
+        <span class="tier-tag">Research Tier · Client Onboarding</span>
+        <div class="card-kicker">00 / The Ecosystem</div>
+        <h2>J-Digital-Twin</h2>
+        <p>The full digital education ecosystem, rendered as a living system rather than a syllabus. The Research level is the front door for prospective clients — a guided walkthrough of TMVES (Tensor → Matrix → Vector → Eigenmode → Scalar) in production, showing the pentadic architecture as it actually operates rather than as it is merely described.</p>
+        <a href="https://j-digital-twin.onrender.com/" class="button" target="_blank" rel="noopener">Enter the Twin →</a>
+      </div>
+
       <!-- Card 1: The App -->
       <div class="card app">
         <div class="card-kicker">01 / The Engine</div>

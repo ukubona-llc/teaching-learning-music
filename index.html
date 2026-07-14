@@ -27,6 +27,7 @@
       --hair: rgba(236,228,211,0.14);
       --hair-soft: rgba(236,228,211,0.06);
       --shadow: 0 4px 24px rgba(0,0,0,0.2);
+      --accent: var(--violet);
     }
 
     html.light-mode {
@@ -81,7 +82,6 @@
     a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
     a:hover { color: var(--gold-dim); }
 
-    /* ---------- NAV ---------- */
     nav {
       display: flex;
       justify-content: space-between;
@@ -134,9 +134,8 @@
     .theme-toggle:hover { border-color: var(--gold); color: var(--gold); }
     .theme-toggle:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
 
-    /* ---------- HERO / HEADLINE ---------- */
     .hero {
-      padding: 4vh 5vw 1vh;
+      padding: 4vh 5vw 0.5vh;
       max-width: 900px;
       margin: 0 auto;
       text-align: center;
@@ -160,18 +159,17 @@
     .hero h1 em { color: var(--gold); font-style: italic; font-weight: 400; }
     .hero p.sub {
       color: var(--ink-dim);
-      max-width: 58ch;
+      max-width: 56ch;
       margin: 0 auto;
       font-size: 1.05rem;
     }
 
-    /* ---------- PENTAGRAM STAGE ---------- */
-    .star-stage {
-      position: relative;
-      max-width: 640px;
-      margin: 2vh auto 3vh;
+    .stage {
+      max-width: 620px;
+      margin: 2vh auto 8vh;
       padding: 0 5vw;
     }
+
     .star-svg {
       width: 100%;
       height: auto;
@@ -185,20 +183,21 @@
       stroke-linejoin: round;
       transition: stroke 0.5s ease;
     }
-    .star-stage:hover .star-line { stroke: var(--gold-dim); }
+    .stage:hover .star-line { stroke: var(--gold-dim); }
 
     .star-core {
       fill: var(--bg-panel);
       stroke: var(--hair);
       stroke-width: 1;
+      transition: stroke 0.4s ease;
     }
 
-    .vertex-link { cursor: pointer; }
+    .vertex-link { cursor: pointer; outline: none; }
     .vertex-halo {
       fill: none;
       stroke-width: 1.4;
-      opacity: 0.35;
-      transition: opacity 0.35s ease, r 0.35s ease;
+      opacity: 0.3;
+      transition: opacity 0.3s ease, r 0.3s ease;
     }
     .vertex-dot {
       stroke: var(--bg);
@@ -221,12 +220,15 @@
       fill: var(--ink-faint);
     }
     .vertex-link:hover .vertex-halo,
-    .vertex-link:focus .vertex-halo { opacity: 0.9; r: 22; }
+    .vertex-link:focus-visible .vertex-halo { opacity: 0.85; }
     .vertex-link:hover .vertex-dot,
-    .vertex-link:focus .vertex-dot { r: 9; }
+    .vertex-link:focus-visible .vertex-dot { r: 9; }
     .vertex-link:hover .vertex-label,
-    .vertex-link:focus .vertex-label { fill: var(--ink); }
-    .vertex-link:focus { outline: none; }
+    .vertex-link:focus-visible .vertex-label { fill: var(--ink); }
+
+    .vertex-link.active .vertex-halo { opacity: 1; r: 23; }
+    .vertex-link.active .vertex-dot { r: 9.5; }
+    .vertex-link.active .vertex-label { fill: var(--ink); }
 
     .v-twin .vertex-dot, .v-twin .vertex-halo { fill: var(--violet); stroke: var(--violet); }
     .v-app  .vertex-dot, .v-app  .vertex-halo { fill: var(--teal); stroke: var(--teal); }
@@ -241,99 +243,72 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       color: var(--ink-faint);
-      margin: -1vh auto 5vh;
+      margin: 1vh 0 3.5vh;
     }
 
-    /* ---------- ROUTER GRID (secondary reference) ---------- */
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 1.75rem;
-      max-width: 1200px;
-      margin: 0 auto 8vh;
-      padding: 0 5vw;
-    }
-
-    .card {
+    .panel {
       background: var(--bg-panel);
       border: 1px solid var(--hair);
+      border-top: 3px solid var(--accent);
       border-radius: 6px;
-      padding: 2.2rem 1.8rem;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      scroll-margin-top: 2rem;
+      padding: 2.4rem 2.2rem;
+      transition: border-color 0.4s ease, box-shadow 0.3s ease;
+      box-shadow: var(--shadow);
     }
-    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--gold-dim); }
-
-    .card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
-      background: var(--hair);
-      transition: background 0.3s;
+    .panel-inner {
+      animation: rise 0.35s ease;
     }
-    .card.twin::before { background: var(--violet); }
-    .card.app::before { background: var(--teal); }
-    .card.curriculum::before { background: var(--gold); }
-    .card.essay::before { background: var(--ink-dim); }
-    .card.atelier::before { background: var(--copper); }
-
-    .card.twin { border-color: var(--violet-dim); }
-    .card.twin:hover { border-color: var(--violet); }
-    .card.atelier { border-color: var(--copper-dim); }
-    .card.atelier:hover { border-color: var(--copper); }
-
-    .card-kicker {
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 11.5px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 1rem;
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .card h2 {
-      font-family: 'Fraunces', serif;
-      font-size: 1.45rem;
-      font-weight: 500;
-      margin: 0 0 0.9rem;
-      color: var(--ink);
-      line-height: 1.2;
-    }
-    .card p { color: var(--ink-dim); font-size: 0.93rem; margin: 0 0 1.8rem; flex-grow: 1; }
-    .card a.button {
-      display: inline-block;
-      align-self: flex-start;
-      font-family: 'IBM Plex Mono', monospace;
-      font-size: 12px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--bg);
-      background: var(--ink);
-      padding: 0.75rem 1.5rem;
-      border-radius: 3px;
-      transition: background 0.2s, color 0.2s;
-    }
-    .card a.button:hover { background: var(--gold); color: #14111C; }
-    .card.twin a.button:hover { background: var(--violet); color: #14111C; }
-    .card.atelier a.button:hover { background: var(--copper); color: #14111C; }
-
-    .tier-tag {
+    .panel .tier-tag {
       display: inline-block;
       font-family: 'IBM Plex Mono', monospace;
       font-size: 10.5px;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--violet);
-      border: 1px solid var(--violet-dim);
+      color: var(--accent);
+      border: 1px solid var(--accent);
       border-radius: 3px;
       padding: 0.25rem 0.6rem;
       margin-bottom: 1rem;
-      align-self: flex-start;
     }
-
-    .button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .panel .card-kicker {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 0.9rem;
+    }
+    .panel h2 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      margin: 0 0 0.9rem;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .panel p {
+      color: var(--ink-dim);
+      font-size: 0.97rem;
+      margin: 0 0 1.7rem;
+    }
+    .panel a.button {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 0.8rem 1.6rem;
+      border-radius: 3px;
+      transition: filter 0.2s;
+    }
+    .panel a.button:hover { filter: brightness(1.12); color: var(--bg); }
+    .panel a.button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
     footer {
       margin-top: auto;
@@ -350,6 +325,7 @@
     @media (max-width: 560px) {
       .vertex-label { font-size: 9.5px; }
       .vertex-kicker { font-size: 8px; }
+      .panel { padding: 2rem 1.4rem; }
     }
   </style>
 </head>
@@ -369,102 +345,58 @@
     <section class="hero">
       <div class="eyebrow">A Digital Twin for Musical Intuition</div>
       <h1>The <em>Berklee Pocket</em> meets<br/>the Latent Space.</h1>
-      <p class="sub">Five points, one pentad. Click a vertex to enter that part of the Ukubona music ecosystem — theory, engine, twin, essay, and atelier — or scroll for the full map below.</p>
+      <p class="sub">Five points, one pentad. Click a vertex to reveal that part of the Ukubona music ecosystem below — theory, engine, twin, essay, and atelier.</p>
     </section>
 
-    <!-- PENTAGRAM STAGE -->
-    <section class="star-stage" aria-label="Pentadic navigation">
+    <section class="stage" aria-label="Pentadic navigation">
       <svg class="star-svg" viewBox="0 0 500 480" xmlns="http://www.w3.org/2000/svg">
 
-        <!-- the true {5/2} star: five vertices, each connected to the two non-adjacent points -->
         <path class="star-line" d="M250,40 L373.48,419.89 L50.29,185.11 L449.71,185.11 L126.52,419.89 Z" />
 
-        <!-- the inner pentagon, formed naturally where the chords cross -->
         <polygon class="star-core" points="250,141.5 322.9,196.3 294.9,282.8 205.1,282.8 177.1,196.3" />
 
-        <!-- V0 — top — J-Digital-Twin -->
-        <a href="https://j-digital-twin.onrender.com/" target="_blank" rel="noopener" class="vertex-link v-twin" aria-label="Enter J-Digital-Twin">
+        <g class="vertex-link v-twin active" tabindex="0" role="button" data-id="twin" aria-label="Show J-Digital-Twin">
           <circle class="vertex-halo" cx="250" cy="40" r="17" />
           <circle class="vertex-dot" cx="250" cy="40" r="7" />
           <text class="vertex-kicker" x="250" y="14" text-anchor="middle">00 · Ecosystem</text>
           <text class="vertex-label" x="250" y="66" text-anchor="middle">J-Digital-Twin</text>
-        </a>
+        </g>
 
-        <!-- V1 — upper right — Interactive Trainer -->
-        <a href="https://ukb-music-edu-ui.onrender.com/" target="_blank" rel="noopener" class="vertex-link v-app" aria-label="Launch Interactive Trainer">
+        <g class="vertex-link v-app" tabindex="0" role="button" data-id="app" aria-label="Show Interactive Trainer">
           <circle class="vertex-halo" cx="449.71" cy="185.11" r="17" />
           <circle class="vertex-dot" cx="449.71" cy="185.11" r="7" />
           <text class="vertex-kicker" x="449.71" y="164" text-anchor="middle">01 · Engine</text>
           <text class="vertex-label" x="449.71" y="211" text-anchor="middle">Trainer</text>
-        </a>
+        </g>
 
-        <!-- V2 — lower right — Gospel Music University -->
-        <a href="https://ukubona-llc.github.io/gospel-music-university/" target="_blank" rel="noopener" class="vertex-link v-curr" aria-label="Read Gospel Music University syllabus">
+        <g class="vertex-link v-curr" tabindex="0" role="button" data-id="curriculum" aria-label="Show Gospel Music University">
           <circle class="vertex-halo" cx="373.48" cy="419.89" r="17" />
           <circle class="vertex-dot" cx="373.48" cy="419.89" r="7" />
           <text class="vertex-kicker" x="373.48" y="399" text-anchor="middle">02 · Theory</text>
           <text class="vertex-label" x="373.48" y="446" text-anchor="middle">Syllabus</text>
-        </a>
+        </g>
 
-        <!-- V3 — lower left — Okubala si Kulaba essay -->
-        <a href="https://ukubona-llc.github.io/naming/" target="_blank" rel="noopener" class="vertex-link v-essay" aria-label="Read the Okubala si Kulaba essay">
+        <g class="vertex-link v-essay" tabindex="0" role="button" data-id="essay" aria-label="Show Okubala si Kulaba essay">
           <circle class="vertex-halo" cx="126.52" cy="419.89" r="17" />
           <circle class="vertex-dot" cx="126.52" cy="419.89" r="7" />
           <text class="vertex-kicker" x="126.52" y="399" text-anchor="middle">03 · Epistemology</text>
           <text class="vertex-label" x="126.52" y="446" text-anchor="middle">Essay</text>
-        </a>
+        </g>
 
-        <!-- V4 — upper left — The Atelier -->
-        <a href="#atelier" class="vertex-link v-atelier" aria-label="Enter the Atelier">
+        <g class="vertex-link v-atelier" tabindex="0" role="button" data-id="atelier" aria-label="Show the Atelier">
           <circle class="vertex-halo" cx="50.29" cy="185.11" r="17" />
           <circle class="vertex-dot" cx="50.29" cy="185.11" r="7" />
           <text class="vertex-kicker" x="50.29" y="164" text-anchor="middle">04 · Crucible</text>
           <text class="vertex-label" x="50.29" y="211" text-anchor="middle">Atelier</text>
-        </a>
+        </g>
 
       </svg>
-    </section>
-    <p class="star-caption">The {5/2} star — five points, one pentad</p>
 
-    <!-- ROUTER CARDS (full detail, same five destinations) -->
-    <section class="grid">
+      <p class="star-caption">The {5/2} star — five points, one pentad</p>
 
-      <div class="card twin" id="twin">
-        <span class="tier-tag">Research Tier · Client Onboarding</span>
-        <div class="card-kicker">00 / The Ecosystem</div>
-        <h2>J-Digital-Twin</h2>
-        <p>The complete educational ecosystem presented as a living system rather than a static syllabus. Research Tier is the front door for prospective clients: a guided tour of TMVES (Tensor → Matrix → Vector → Eigenmode → Scalar) operating in practice rather than merely described in theory.</p>
-        <a href="https://j-digital-twin.onrender.com/" class="button" target="_blank" rel="noopener">Enter the Twin →</a>
+      <div class="panel">
+        <div class="panel-inner" id="panelInner"></div>
       </div>
-
-      <div class="card app" id="app">
-        <div class="card-kicker">01 / The Engine</div>
-        <h2>Interactive Trainer</h2>
-        <p>The React-powered live application. Practice with the Piano Landscape, chord stacks, and real-time interval training to build fluency across all twelve keys.</p>
-        <a href="https://ukb-music-edu-ui.onrender.com/" class="button" target="_blank" rel="noopener">Launch App →</a>
-      </div>
-
-      <div class="card curriculum" id="curriculum">
-        <div class="card-kicker">02 / The Theory</div>
-        <h2>Gospel Music University</h2>
-        <p>The transcribed syllabus. A systematic guide to intervals, diatonic chords, tensions, common progressions, and the Shared Notes Principle. Learn the vocabulary that makes harmony visible.</p>
-        <a href="https://ukubona-llc.github.io/gospel-music-university/" class="button" target="_blank" rel="noopener">Read Syllabus →</a>
-      </div>
-
-      <div class="card essay" id="essay">
-        <div class="card-kicker">03 / The Epistemology</div>
-        <h2>Okubala si Kulaba</h2>
-        <p>An essay on naming, large language models, and how giving structure to intuition helps us reason about harmony, memory, generations, and the MCR pentad.</p>
-        <a href="https://ukubona-llc.github.io/naming/" class="button" target="_blank" rel="noopener">Read Essay →</a>
-      </div>
-
-      <div class="card atelier" id="atelier">
-        <div class="card-kicker">04 / The Crucible</div>
-        <h2>The Atelier</h2>
-        <p>Where theory becomes music. The creative workspace for composition, arrangement, improvisation, and real-time collaboration. This is where understanding becomes performance.</p>
-        <a href="#" class="button" target="_blank" rel="noopener">Enter the Atelier →</a>
-      </div>
-
     </section>
 
     <footer>
@@ -490,6 +422,84 @@
         themeToggle.textContent = 'Light Mode';
       }
     });
+
+    const DATA = {
+      twin: {
+        accent: 'var(--violet)',
+        tag: 'Research Tier · Client Onboarding',
+        kicker: '00 / The Ecosystem',
+        title: 'J-Digital-Twin',
+        desc: 'The complete educational ecosystem presented as a living system rather than a static syllabus. Research Tier is the front door for prospective clients: a guided tour of TMVES (Tensor → Matrix → Vector → Eigenmode → Scalar) operating in practice rather than merely described in theory.',
+        href: 'https://j-digital-twin.onrender.com/',
+        label: 'Enter the Twin →'
+      },
+      app: {
+        accent: 'var(--teal)',
+        kicker: '01 / The Engine',
+        title: 'Interactive Trainer',
+        desc: 'The React-powered live application. Practice with the Piano Landscape, chord stacks, and real-time interval training to build fluency across all twelve keys.',
+        href: 'https://ukb-music-edu-ui.onrender.com/',
+        label: 'Launch App →'
+      },
+      curriculum: {
+        accent: 'var(--gold)',
+        kicker: '02 / The Theory',
+        title: 'Gospel Music University',
+        desc: 'The transcribed syllabus. A systematic guide to intervals, diatonic chords, tensions, common progressions, and the Shared Notes Principle. Learn the vocabulary that makes harmony visible.',
+        href: 'https://ukubona-llc.github.io/gospel-music-university/',
+        label: 'Read Syllabus →'
+      },
+      essay: {
+        accent: 'var(--ink-dim)',
+        kicker: '03 / The Epistemology',
+        title: 'Okubala si Kulaba',
+        desc: 'An essay on naming, large language models, and how giving structure to intuition helps us reason about harmony, memory, generations, and the MCR pentad.',
+        href: 'https://ukubona-llc.github.io/naming/',
+        label: 'Read Essay →'
+      },
+      atelier: {
+        accent: 'var(--copper)',
+        kicker: '04 / The Crucible',
+        title: 'The Atelier',
+        desc: 'Where theory becomes music. The creative workspace for composition, arrangement, improvisation, and real-time collaboration. This is where understanding becomes performance.',
+        href: '#',
+        label: 'Enter the Atelier →'
+      }
+    };
+
+    const panelInner = document.getElementById('panelInner');
+    const panel = document.querySelector('.panel');
+    const vertices = document.querySelectorAll('.vertex-link');
+
+    function renderPanel(id) {
+      const d = DATA[id];
+      panel.style.setProperty('--accent', d.accent);
+      panelInner.classList.remove('panel-inner');
+      void panelInner.offsetWidth;
+      panelInner.classList.add('panel-inner');
+      panelInner.innerHTML =
+        (d.tag ? '<span class="tier-tag">' + d.tag + '</span>' : '') +
+        '<div class="card-kicker">' + d.kicker + '</div>' +
+        '<h2>' + d.title + '</h2>' +
+        '<p>' + d.desc + '</p>' +
+        '<a class="button" href="' + d.href + '" target="_blank" rel="noopener">' + d.label + '</a>';
+    }
+
+    vertices.forEach(v => {
+      v.addEventListener('click', () => {
+        vertices.forEach(o => o.classList.remove('active'));
+        v.classList.add('active');
+        renderPanel(v.dataset.id);
+      });
+      v.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          v.click();
+        }
+      });
+    });
+
+    renderPanel('twin');
   </script>
 </body>
 </html>

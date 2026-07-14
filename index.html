@@ -185,13 +185,6 @@
     }
     .stage:hover .star-line { stroke: var(--gold-dim); }
 
-    .star-core {
-      fill: var(--bg-panel);
-      stroke: var(--hair);
-      stroke-width: 1;
-      transition: stroke 0.4s ease;
-    }
-
     .vertex-link { cursor: pointer; outline: none; }
     .vertex-halo {
       fill: none;
@@ -352,8 +345,6 @@
       <svg class="star-svg" viewBox="0 0 500 480" xmlns="http://www.w3.org/2000/svg">
 
         <path class="star-line" d="M250,40 L373.48,419.89 L50.29,185.11 L449.71,185.11 L126.52,419.89 Z" />
-
-        <polygon class="star-core" points="250,141.5 322.9,196.3 294.9,282.8 205.1,282.8 177.1,196.3" />
 
         <g class="vertex-link v-twin active" tabindex="0" role="button" data-id="twin" aria-label="Show J-Digital-Twin">
           <circle class="vertex-halo" cx="250" cy="40" r="17" />
